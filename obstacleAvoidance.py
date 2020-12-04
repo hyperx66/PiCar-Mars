@@ -54,44 +54,46 @@ def cameraPos2():
 def cameraPos3():
     turn.neck_turn(210)
     
+def startAvoid():
+    global scanPos, scanDir
 
-while True:
-    if scanPos == 1:
-        cameraPos2()
-        time.sleep(0.15)
-        scanList[0] = ultra.checkdist()
-    elif scanPos == 2:
-        cameraPos1()
-        time.sleep(0.15)
-        scanList[1] = ultra.checkdist()
-    elif scanPos == 3:
-        cameraPos3()
-        time.sleep(0.15)
-        scanList[2] = ultra.checkdist()
-        
-    scanPos += scanDir #update scanPos
-
-    if scanPos > scanNum or scanPos <1:
-        #replace scan direction
-        if scanDir == 1: scanDir = -1
-        elif scanDir == -1: scanDir = 1
-        #restore scanned location
-        scanPos += scanDir*2
-    
-    if min(scanList)<rangeKeep:
-        if scanList.index(min(scanList)) == 0:
-            moveAngle(200)
-        elif scanList.index(min(scanList)) == 2:
-            moveAngle(300)
-        elif scanList.index(min(scanList)) == 1:
-            if scanList[0] < scanList[2]:
-                moveAngle(200)
-            else:
-                moveAngle(300)
-        if max(scanList) < rangeKeep or min(scanList) < rangeKeep/3:
-            print("Object sibei near")
-            move.move_backward(80)
+    while True:
+        if scanPos == 1:
+            cameraPos2()
+            time.sleep(0.15)
+            scanList[0] = ultra.checkdist()
+        elif scanPos == 2:
+            cameraPos1()
+            time.sleep(0.15)
+            scanList[1] = ultra.checkdist()
+        elif scanPos == 3:
+            cameraPos3()
+            time.sleep(0.15)
+            scanList[2] = ultra.checkdist()
             
-    else:
-        moveAngle(240)
-        move.move_forward(80)
+        scanPos += scanDir #update scanPos
+
+        if scanPos > scanNum or scanPos <1:
+            #replace scan direction
+            if scanDir == 1: scanDir = -1
+            elif scanDir == -1: scanDir = 1
+            #restore scanned location
+            scanPos += scanDir*2
+        
+        if min(scanList)<rangeKeep:
+            if scanList.index(min(scanList)) == 0:
+                moveAngle(200)
+            elif scanList.index(min(scanList)) == 2:
+                moveAngle(300)
+            elif scanList.index(min(scanList)) == 1:
+                if scanList[0] < scanList[2]:
+                    moveAngle(200)
+                else:
+                    moveAngle(300)
+            if max(scanList) < rangeKeep or min(scanList) < rangeKeep/3:
+                print("Object sibei near")
+                move.move_backward(80)
+                
+        else:
+            moveAngle(240)
+            move.move_forward(80)
